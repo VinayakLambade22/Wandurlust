@@ -1,21 +1,60 @@
 <% layout("/layouts/boilerplate") %>
 <style>
+  .scroll-container {
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .scroll-buttons {
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0;
+  }
+
+  .filters-wrapper {
+    overflow-x: hidden;
+    flex: 1;
+  }
+
   #filters {
     display: flex;
-    flex-wrap: wrap;
-    align-items: center;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding: 1rem;
+    gap: 1.5rem;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  #filters::-webkit-scrollbar {
+    display: none;
   }
 
   .filter {
     text-align: center;
-    margin-right: 2rem;
-    margin-top: 2rem;
     cursor: pointer;
     opacity: 0.7;
+    min-width: 80px;
+    background-color: whitesmoke;
+    border-radius: 1rem;
+    padding: 1rem;
+    flex-shrink: 0;
   }
 
   .filter p {
     font-size: 0.8rem;
+    margin: 0.25rem 0 0;
   }
 
   .filter:hover {
@@ -31,10 +70,11 @@
     border-radius: 1rem;
     height: 3.25rem;
     padding: 1rem;
-    margin-left: 2rem;
     display: flex;
     align-items: center;
     cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
   }
 
   .form-check-label,
@@ -42,80 +82,80 @@
     cursor: pointer;
   }
 </style>
-<!-- <h3>All Listings</h3> -->
-<!-- <form method="GET" action="/listings/new">
-    <button>Create New Listing</button>
-  </form> -->
-<div id="filters">
-  <div class="filter">
-    <div><i class="fa-solid fa-fire"></i></div>
-    <p>Trending</p>
+
+<div class="scroll-container">
+  <div class="scroll-buttons scroll-left" onclick="scrollFilters(-200)">
+    <i class="fa-solid fa-chevron-left"></i>
   </div>
 
-  <div class="filter">
-    <div><i class="fa-solid fa-bed"></i></div>
-    <p>Rooms</p>
-  </div>
+  <div class="filters-wrapper">
+    <div id="filters">
+      <div class="filter">
+        <div><i class="fa-solid fa-fire"></i></div>
+        <p>Trending</p>
+      </div>
+      <div class="filter">
+        <div><i class="fa-solid fa-bed"></i></div>
+        <p>Rooms</p>
+      </div>
+      <div class="filter">
+        <div><i class="fa-solid fa-mountain-city"></i></div>
+        <p>Iconic cities</p>
+      </div>
+      <div class="filter">
+        <div><i class="fa-solid fa-mountain-sun"></i></div>
+        <p>Mountain cities</p>
+      </div>
+      <div class="filter">
+        <div><i class="fa-brands fa-fort-awesome"></i></div>
+        <p>Castle</p>
+      </div>
+      <div class="filter">
+        <div><i class="fa-solid fa-tents"></i></div>
+        <p>Camping</p>
+      </div>
+      <div class="filter">
+        <div><i class="fa-solid fa-person-swimming"></i></div>
+        <p>Amazing pools</p>
+      </div>
+      <div class="filter">
+        <div><i class="fa-solid fa-umbrella-beach"></i></div>
+        <p>Beach</p>
+      </div>
+      <div class="filter">
+        <div><i class="fa-solid fa-cow"></i></div>
+        <p>Farms</p>
+      </div>
+      <div class="filter">
+        <div><i class="fa-solid fa-person-snowboarding"></i></div>
+        <p>Arctic</p>
+      </div>
+      <div class="filter">
+        <div><i class="fa-solid fa-igloo"></i></div>
+        <p>Domes</p>
+      </div>
 
-  <div class="filter">
-    <div><i class="fa-solid fa-mountain-city"></i></div>
-    <p>Iconic cities</p>
-  </div>
-
-  <div class="filter">
-    <div><i class="fa-solid fa-mountain-sun"></i></div>
-    <p>Mountain cities</p>
-  </div>
-
-  <div class="filter">
-    <div><i class="fa-brands fa-fort-awesome"></i></div>
-    <p>Castle</p>
-  </div>
-
-  <div class="filter">
-    <div><i class="fa-solid fa-tents"></i></div>
-    <p>Camping</p>
-  </div>
-
-  <div class="filter">
-    <div><i class="fa-solid fa-person-swimming"></i></div>
-    <p>Amaging pools</p>
-  </div>
-
-  <div class="filter">
-    <div><i class="fa-solid fa-umbrella-beach"></i></div>
-    <p>Beach</p>
-  </div>
-
-  <div class="filter">
-    <div><i class="fa-solid fa-cow"></i></div>
-    <p>Farms</p>
-  </div>
-
-  <div class="filter">
-    <div><i class="fa-solid fa-person-snowboarding"></i></div>
-    <p>Arctic</p>
-  </div>
-
-  <div class="filter">
-    <div><i class="fa-solid fa-igloo"></i></div>
-    <p>Domes</p>
-  </div>
-
-  <div class="tax-toggle">
-    <div class="form-check-reverse form-switch">
-      <input
-        class="form-check-input"
-        type="checkbox"
-        role="switch"
-        id="switchCheckDefault"
-      />
-      <label class="form-check-label" for="switchCheckDefault"
-        >Display total after taxes</label
-      >
+      <div class="tax-toggle">
+        <div class="form-check-reverse form-switch">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            role="switch"
+            id="switchCheckDefault"
+          />
+          <label class="form-check-label" for="switchCheckDefault"
+            >Display total after taxes</label
+          >
+        </div>
+      </div>
     </div>
   </div>
+
+  <div class="scroll-buttons scroll-right" onclick="scrollFilters(200)">
+    <i class="fa-solid fa-chevron-right"></i>
+  </div>
 </div>
+
 <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3">
   <% for(let listing of allListings) { %>
   <a href="/listings/<%= listing._id %>" class="listing-link">
@@ -140,15 +180,16 @@
 </div>
 
 <script>
-  let taxSwitch = document.getElementById("switchCheckDefault");
+  function scrollFilters(scrollOffset) {
+    const filters = document.getElementById("filters");
+    filters.scrollLeft += scrollOffset;
+  }
+
+  const taxSwitch = document.getElementById("switchCheckDefault");
   taxSwitch.addEventListener("click", () => {
-    let taxInfo = document.getElementsByClassName("tax-info");
-    for (info of taxInfo) {
-      if (info.style.display != "inline") {
-        info.style.display = "inline";
-      } else {
-        info.style.display = "none";
-      }
+    const taxInfo = document.getElementsByClassName("tax-info");
+    for (let info of taxInfo) {
+      info.style.display = info.style.display === "inline" ? "none" : "inline";
     }
   });
 </script>
