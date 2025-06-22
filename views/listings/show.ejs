@@ -3,6 +3,7 @@
   const mapToken = "<%= process.env.MAP_TOKEN %>";
   const listing = <%- JSON.stringify(listing) %>
 </script>
+
 <div class="container mt-3">
   <div class="row">
     <div class="col-12 text-center mb-3">
@@ -18,7 +19,6 @@
         />
         <div class="card-body">
           <p class="card-text"><i>Owned by <%= listing.owner.username %></i></p>
-          <!-- <b><%= listing.title %> </b> <br /> -->
           <p class="card-text"><%= listing.description %></p>
           <p>&#8377; <%= listing.price.toLocaleString("en-IN") %></p>
           <p><%= listing.location %></p>
@@ -26,39 +26,26 @@
         </div>
       </div>
     </div>
-    <br />
 
     <% if (currUser && listing.owner._id.equals(currUser._id)) { %>
     <div class="col-12 d-flex justify-content-center gap-3 mb-3 flex-wrap">
-      <a href="/listings/<%= listing._id %>/edit" class="btn btn-danger"
-        >Edit</a
-      >
-
-      <form method="POST" action="/listings/<%=listing._id%>?_method=DELETE">
+      <a href="/listings/<%= listing._id %>/edit" class="btn btn-danger">Edit</a>
+      <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE">
         <button class="btn btn-dark">Delete</button>
       </form>
     </div>
-    <% } %> <% if(currUser) { %>
+    <% } %>
+
+    <% if(currUser) { %>
     <div class="col-12 col-md-8 offset-md-2">
       <hr />
       <h4>Leave a review</h4>
       <form
-        action="/listings/<%=listing._id%>/review"
+        action="/listings/<%= listing._id %>/review"
         method="POST"
         novalidate
         class="needs-validation"
       >
-        <!-- <div class="mb-3 mt-3">
-        <label for="rating" class="form-label">Rating</label>
-        <input
-          type="range"
-          min="1"
-          max="5"
-          id="rating"
-          name="review[rating]"
-          class="form-range"
-        />
-      </div> -->
         <div class="mb-3 mt-3">
           <label for="rating" class="form-label">Rating</label>
           <fieldset class="starability-slot">
@@ -71,40 +58,15 @@
               checked
               aria-label="No rating."
             />
-            <input
-              type="radio"
-              id="first-rate1"
-              name="raview[rating]"
-              value="1"
-            />
+            <input type="radio" id="first-rate1" name="review[rating]" value="1" />
             <label for="first-rate1" title="Terrible">1 star</label>
-            <input
-              type="radio"
-              id="first-rate2"
-              name="review[rating]"
-              value="2"
-            />
+            <input type="radio" id="first-rate2" name="review[rating]" value="2" />
             <label for="first-rate2" title="Not good">2 stars</label>
-            <input
-              type="radio"
-              id="first-rate3"
-              name="review[rating]"
-              value="3"
-            />
+            <input type="radio" id="first-rate3" name="review[rating]" value="3" />
             <label for="first-rate3" title="Average">3 stars</label>
-            <input
-              type="radio"
-              id="first-rate4"
-              name="review[rating]"
-              value="4"
-            />
+            <input type="radio" id="first-rate4" name="review[rating]" value="4" />
             <label for="first-rate4" title="Very good">4 stars</label>
-            <input
-              type="radio"
-              id="first-rate5"
-              name="review[rating]"
-              value="5"
-            />
+            <input type="radio" id="first-rate5" name="review[rating]" value="5" />
             <label for="first-rate5" title="Amazing">5 stars</label>
           </fieldset>
         </div>
@@ -123,15 +85,16 @@
         <button class="btn btn-outline-dark mb-2">Submit</button>
       </form>
     </div>
-    <hr />
-    <div class="row justify-content-center">
-      <% } %> <% if (listing.reviews.length > 0) { %>
+    <% } %>
+
+    <% if (listing.reviews.length > 0) { %>
+    <div class="row justify-content-center mt-4">
       <div class="col-12 col-md-8">
         <p><b>All Reviews</b></p>
       </div>
 
       <% for (let review of listing.reviews) { %>
-      <div class="col-12 col-md-8 ms-md-3 mb-3 ">
+      <div class="col-12 col-md-8 ms-md-3 mb-3">
         <div class="card px-3">
           <div class="card-body">
             <h5 class="card-title">@<%= review.author.username %></h5>
@@ -141,17 +104,20 @@
             ></p>
             <p class="card-text"><%= review.comment %></p>
           </div>
+          <% if (currUser && review.author._id.equals(currUser._id)) { %>
           <form
-            action="/listings/<%=listing._id%>/review/<%=review._id%>?_method=DELETE"
-            class="mb-3 mt-2 px-3"
+            action="/listings/<%= listing._id %>/review/<%= review._id %>?_method=DELETE"
             method="POST"
+            class="mb-3 mt-2 px-3 pb-3"
           >
             <button class="btn btn-sm btn-dark">Delete</button>
           </form>
+          <% } %>
         </div>
       </div>
-      <% } %> <% } %>
+      <% } %>
     </div>
+    <% } %>
 
     <div class="col-12 col-md-8 offset-md-2 mt-4 mb-2">
       <h3>Where you'll be</h3>
@@ -159,4 +125,5 @@
     </div>
   </div>
 </div>
+
 <script src="/js/map.js"></script>
